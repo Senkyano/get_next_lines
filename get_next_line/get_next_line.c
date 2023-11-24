@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 09:48:44 by rihoy             #+#    #+#             */
-/*   Updated: 2023/11/24 16:58:09 by rihoy            ###   ########.fr       */
+/*   Updated: 2023/11/24 17:23:33 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,29 +15,40 @@
 char	*get_next_line(int fd)
 {
 	static char	*pre;
-	char		*test;
 	t_recup		stock;
 
 	pre = ft_read(fd);
-	test = ft_separateur(pre);
-	return (test);
+	stock = ft_separateur(pre);
+	pre = stock.rest;
+	free(stock.rest);
+	return (stock.curr);
 }
 
-char	*ft_separateur(char *pre)
+t_recup	ft_separateur(char *pre)
 {
 	size_t	lenton;
-	char	*curr;
+	size_t	lenr;
+	t_recup	stock;
 
 	lenton = ft_position_n(pre);
-	curr = malloc((lenton + 1) * sizeof(char));
-	curr[lenton] = '\0';
+	stock.curr = malloc((lenton + 1) * sizeof(char));
+	stock.curr[lenton] = '\0';
 	while (lenton > 0)
 	{
 		lenton--;
-		curr[lenton] = pre[lenton];
+		stock.curr[lenton] = pre[lenton];
 	}
-	
-	return (curr);
+	lenton = ft_position_n(pre);
+	lenr = ft_strlen(pre) - lenton;
+	stock.rest = malloc((lenr + 1) * sizeof(char));
+	stock.rest[lenr] = '\0';
+	while (lenr > 0)
+	{
+		lenr--;
+		stock.rest[lenr] = pre[lenton++];
+	}
+	free(pre);
+	return (stock);
 }
 
 size_t	ft_position_n(char *pre)
