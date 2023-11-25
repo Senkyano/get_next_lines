@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 09:46:34 by rihoy             #+#    #+#             */
-/*   Updated: 2023/11/24 17:12:09 by rihoy            ###   ########.fr       */
+/*   Updated: 2023/11/25 18:45:50 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,10 @@
 # include <fcntl.h>
 # include <string.h>
 
-#define BUFFER_SIZE 2
+#ifndef BUFFER_SIZE
+# define BUFFER_SIZE 3
+
+#endif
 
 typedef struct	s_recup
 {
@@ -32,7 +35,7 @@ char	*get_next_line(int fd);
 char	*ft_read(int fd);
 size_t	ft_strlen(const char *s);
 char	*ft_join(char *s1, char *s2);
-size_t	ft_position_n(char *pre);
+ssize_t	ft_position_n(char *pre);
 t_recup	ft_separateur(char *pre);
 
 #endif

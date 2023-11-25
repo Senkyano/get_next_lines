@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 09:48:44 by rihoy             #+#    #+#             */
-/*   Updated: 2023/11/25 18:24:57 by rihoy            ###   ########.fr       */
+/*   Updated: 2023/11/25 18:45:22 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,16 @@ char	*get_next_line(int fd)
 	if (pre == NULL)
 		stock.curr = ft_read(fd);
 	stock = ft_separateur(stock.curr);
+	printf("%s\n", stock.rest);
 	pre = stock.rest;
 	return (stock.curr);
 }
 
 t_recup	ft_separateur(char *pre)
 {
-	size_t	lenton;
-	size_t	lenr;
+	ssize_t	lenton;
+	ssize_t	lenr;
+	ssize_t	i;
 	t_recup	stock;
 
 	lenton = ft_position_n(pre);
@@ -49,18 +51,16 @@ t_recup	ft_separateur(char *pre)
 	lenr = ft_strlen(pre) - lenton;
 	stock.rest = malloc((lenr + 1) * sizeof(char));
 	stock.rest[lenr] = '\0';
-	while (lenr > 0)
-	{
-		lenr--;
-		stock.rest[lenr] = pre[lenton++];
-	}
+	i = 0;
+	while (i < lenr)
+		stock.rest[i++] = pre[lenton++];
 	free(pre);
 	return (stock);
 }
 
-size_t	ft_position_n(char *pre)
+ssize_t	ft_position_n(char *pre)
 {
-	size_t	i;
+	ssize_t	i;
 
 	i = 0;
 	while (pre[i] != '\0')
