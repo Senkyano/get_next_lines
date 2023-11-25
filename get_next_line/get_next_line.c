@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 09:48:44 by rihoy             #+#    #+#             */
-/*   Updated: 2023/11/24 17:23:33 by rihoy            ###   ########.fr       */
+/*   Updated: 2023/11/25 18:24:57 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,17 @@ char	*get_next_line(int fd)
 	static char	*pre;
 	t_recup		stock;
 
-	pre = ft_read(fd);
-	stock = ft_separateur(pre);
+	if (pre != NULL)
+	{
+		if (ft_position_n(pre) != -1)
+			stock.curr = pre;
+		if (ft_position_n(pre) == -1)
+			stock.curr = ft_join(pre, ft_read(fd));
+	}
+	if (pre == NULL)
+		stock.curr = ft_read(fd);
+	stock = ft_separateur(stock.curr);
 	pre = stock.rest;
-	free(stock.rest);
 	return (stock.curr);
 }
 
