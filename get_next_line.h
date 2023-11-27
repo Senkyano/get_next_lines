@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 09:46:34 by rihoy             #+#    #+#             */
-/*   Updated: 2023/11/22 13:43:32 by rihoy            ###   ########.fr       */
+/*   Updated: 2023/11/26 19:08:21 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,23 @@
 # include <fcntl.h>
 # include <string.h>
 
+#ifndef BUFFER_SIZE
+# define BUFFER_SIZE 2
+
+#endif
+
+typedef struct	s_recup
+{
+	char	*rest;
+	char	*curr;
+}	t_recup;
+
 char	*get_next_line(int fd);
-char	*ft_malloc(char *cpy, ssize_t len);
-char	*ft_to_n(char *all, char *buf, ssize_t totR);
+char	*ft_read(int fd, char *curr);
+size_t	ft_strlen(const char *s);
+char	*ft_join(char *s1, char *s2);
+char	*ft_rest(char *curr);
+char	*ft_line(char *curr);
+ssize_t	ft_pos_n(char *curr);
 
 #endif
