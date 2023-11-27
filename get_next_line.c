@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 09:48:44 by rihoy             #+#    #+#             */
-/*   Updated: 2023/11/27 12:45:18 by rihoy            ###   ########.fr       */
+/*   Updated: 2023/11/27 17:23:13 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,88 +15,104 @@
 char	*get_next_line(int fd)
 {
 	static char	*rest;
-	char		*curr;
 	char		*line;
+	char		*curr;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	curr = ft_read(fd, rest);
+	curr = ft_readfile(fd, rest);
 	line = ft_line(curr);
-	rest = ft_rest(curr);
+	rest = ft_aftline(curr);
 	return (line);
 }
 
-char	*ft_rest(char *curr)
+char	*ft_aftline(char *curr)
 {
-	char	*rest;
-	size_t	i;
-	ssize_t	n;
+	char	*new;
+	int		i;
+	int		j;
 
-	n = ft_pos_n(curr);
 	i = 0;
-	if (curr[i] == '\0' || !curr || n == -1)
+	j = 0;
+	if (curr == NULL)
+	{
+		free(curr);
 		return (NULL);
-	rest = malloc((ft_strlen(curr) - n + 1) * sizeof(char));
-	if (!rest)
+	}
+	while (curr[i] != '\n' && curr[i])
+		i++;
+	if (curr[i] == '\n')
+		i++;
+	new = malloc((ft_strlen(curr) + i + 1) * sizeof(char));
+	if (!new)
 		return (NULL);
-	while (curr[++n])
-		rest[i++] = curr[n];
-	rest[i] = '\0';
+	i--;
+	while (curr[++i])
+		new[j++] = curr[i];
+	new[j] = '\0';
 	free(curr);
-	return (rest);
+	return (new);
 }
 
 char	*ft_line(char *curr)
 {
-	char	*line;
-	size_t	i;
-
+	char	*new;
+	int		i;
+	
 	i = 0;
-	if (curr[i] == 0 || curr == NULL)
+	if (curr == NULL || curr[0] == 0)
 		return (NULL);
-	line = malloc((ft_pos_n(curr) + 2) * sizeof(char));
-	if (!line)
-		return (NULL);
-	while (curr[i] != '\n')
-	{
-		line[i] = curr[i];
+	while (curr[i] != '\n' && curr[i])
 		i++;
-	}
 	if (curr[i] == '\n')
-		line[i++] = '\n';
-	line[i] = '\0';
-	return (line);
-}
-
-ssize_t	ft_pos_n(char *curr)
-{
-	ssize_t	i;
-
-	i = 0;
-	while (curr[i])
-	{
-		if (curr[i] == '\n')
-			return (i);
 		i++;
-	}
-	return (-1);
+	new = malloc((i + 1) * sizeof(char));
+	if (!new)
+		return (NULL);
+	new[i] = '\0';
+	i = -1;
+	while (curr[++i] != '\n' && curr[i])
+		new[i] = curr[i];
+	if (curr[i] == '\n')
+		new[i] = curr[i];
+	return (new);
 }
 
-char	*ft_read(int fd, char *curr)
+int	ft_srch(char *src, char c)
 {
-	char	buf[BUFFER_SIZE + 1];
+	int	i;
+
+	i = -1;
+	if (!src)
+		return (0);
+	while (src[++i])
+		if (src[i] == c)
+			return (1);
+	return (0);
+}
+
+char	*ft_readfile(int fd, char *rest)
+{
+	char	*buf;
 	ssize_t	bitr;
 
 	bitr = 1;
-	while (bitr > 0)
+	buf = malloc((BUFFER_SIZE + 1) * sizeof(char));
+	if (!buf)
+		return(NULL);
+	while (bitr != 0 && !ft_srch(rest, '\n'))
 	{
 		bitr = read(fd, buf, BUFFER_SIZE);
 		if (bitr < 0)
+		{
+			free(buf);
 			return (NULL);
+		}
 		buf[bitr] = '\0';
-		curr = ft_join(curr, buf);
-		if (ft_pos_n(buf) != -1)
-			return (curr);
+		rest = ft_join(rest, buf);
+		if (!rest)
+			return (NULL);	
 	}
-	return (curr);
+	free(buf);
+	return (rest);
 }

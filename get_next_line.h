@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 09:46:34 by rihoy             #+#    #+#             */
-/*   Updated: 2023/11/26 19:08:21 by rihoy            ###   ########.fr       */
+/*   Updated: 2023/11/27 16:04:26 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,18 +25,18 @@
 
 #endif
 
-typedef struct	s_recup
+typedef struct	s_stock
 {
 	char	*rest;
 	char	*curr;
-}	t_recup;
+	char	*line;
+}	t_stock;
 
 char	*get_next_line(int fd);
-char	*ft_read(int fd, char *curr);
-size_t	ft_strlen(const char *s);
+char	*ft_readfile(int fd, char *rest);
 char	*ft_join(char *s1, char *s2);
-char	*ft_rest(char *curr);
+size_t	ft_strlen(const char *s);
 char	*ft_line(char *curr);
-ssize_t	ft_pos_n(char *curr);
+char	*ft_aftline(char *curr);
 
 #endif

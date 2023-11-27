@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 14:32:08 by rihoy             #+#    #+#             */
-/*   Updated: 2023/11/27 12:39:39 by rihoy            ###   ########.fr       */
+/*   Updated: 2023/11/27 14:37:51 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,36 +19,36 @@ size_t	ft_strlen(const char *s)
 	len = 0;
 	if (!s)
 		return (len);
-	while (s[len] != '\0')
+	while (s[len])
 		len++;
 	return (len);	
 }
 
 char	*ft_join(char *s1, char *s2)
 {
-	size_t	lentot;
-	size_t	len;
+	int		i;
+	int		j;
 	char	*new;
 
-	if (s2 == NULL && s1 != NULL)
-		return (s1);
-	lentot = ft_strlen(s1) + ft_strlen(s2);
-	new = malloc((lentot + 1) * sizeof(char));
+	if (!s1)
+	{
+		s1 = malloc(1 * sizeof(char));
+		if (!s1)
+			return (NULL);
+		s1[0] = '\0';
+	}
+	if (!s2)
+		return (NULL);
+	new = malloc((ft_strlen(s1) + ft_strlen(s2) + 1) * sizeof(char));
 	if (!new)
 		return (NULL);
-	len = 0;
-	if (s1 != NULL)
-		while (s1[len])
-		{
-			new[len] = s1[len];
-			len++;
-		}
-	while (*s2 != '\0')
-	{
-		new[len++] = *s2;
-		s2++;
-	}
-	new[len] = '\0';
+	i = -1;
+	j = -1;
+	while (s1[++i])
+		new[i] = s1[i];
+	while (s2[++j])
+		new[i++] = s2[j];
+	new[i] = '\0';
 	free(s1);
 	return (new);
 }
