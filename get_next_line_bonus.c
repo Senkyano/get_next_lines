@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 09:48:44 by rihoy             #+#    #+#             */
-/*   Updated: 2023/12/31 17:26:50 by rihoy            ###   ########.fr       */
+/*   Updated: 2023/12/31 17:29:23 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,15 @@
 
 char	*get_next_line(int fd)
 {
-	static char	*rest;
+	static char	*rest[4096];
 	char		*line;
 	char		*curr;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	curr = ft_readfile(fd, rest);
+	curr = ft_readfile(fd, rest[fd]);
 	line = ft_line(curr);
-	rest = ft_aftline(curr);
+	rest[fd] = ft_aftline(curr);
 	return (line);
 }
 
