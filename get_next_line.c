@@ -6,7 +6,7 @@
 /*   By: rihoy <rihoy@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 09:48:44 by rihoy             #+#    #+#             */
-/*   Updated: 2023/12/31 17:26:50 by rihoy            ###   ########.fr       */
+/*   Updated: 2024/01/05 19:53:20 by rihoy            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ char	*ft_aftline(char *curr)
 
 	i = 0;
 	j = 0;
-	if (curr == NULL)
+	if (curr == NULL || curr[0] == 0)
 	{
 		free(curr);
 		return (NULL);
